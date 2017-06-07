@@ -4,5 +4,5 @@
  */
 
 fun main(Args: Array<String>){
-    print("hi")
+    print("Hello World!")
 }
