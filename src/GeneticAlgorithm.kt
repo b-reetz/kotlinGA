@@ -5,4 +5,5 @@
 
 fun main(Args: Array<String>){
     print("hi")
+	println("Sam says hi too")
 }
