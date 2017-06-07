@@ -87,8 +87,49 @@ fun main(Args: Array<String>){
 	
 	//********TEST SAMS CODE HERE********//
 
+	fun fit(s:String): Int{
+		var sArr = s.toCharArray()
+		var total: Int = 0
+		
+		for(c in sArr){
+			if(s.equals('1')){
+				total++
+			}
+			
+		}
+		
+		return total
+	}
+	fun mutate(s: String): String{
+		var sArr = s.toCharArray()
+		for(i in 0..(sArr.size-1)){
+			if(RANDOM.nextDouble() <= 1/s.length){
+				if(sArr[i].equals('1')){
+					sArr[i] = '0'
+				}
+				else{
+					sArr[i] = '1'
+				}
+			}
+		}
+		return sArr.contentToString()
+	}
+	
+	fun onePointCrossover(a: String, b: String): String{
+		var aLen: Int = a.length
+		//var bLen: Int = b.length
+		//var diff: Int = aLen - bLen
+		var cutPoint: Int = RANDOM.nextInt(aLen)/aLen//if(diff > -1) RANDOM.nextInt(aLen)/aLen else RANDOM.nextInt(bLen)/bLen
+		
+		
+		return a.substring(0, cutPoint-1) + b.substring(cutPoint, aLen)
+	}
 
-
+	
+	
+	
+	
+	
 	//***********************************//
 
 
