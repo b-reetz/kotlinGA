@@ -13,11 +13,11 @@ fun main(args: Array<String>){
 		return (d * d) - (10 * Math.cos(2 * Math.PI * d))		
 	}
 	
-	fun fitness(a: Collection<Double>): Double{
+	fun fitness(a: Collection<Number>): Number{
 		var result: Double = 10.0 * a.size
 		var newSol: ArrayList<String> = ArrayList()
 		for(d in a){
-			result += formula(d)
+			result += formula(d as Double)
 					
 		}
 		return result
@@ -67,14 +67,26 @@ fun main(args: Array<String>){
 		for(i in 0..a.size-1){
 			newSol = ArrayList()
 			val m = a.elementAt(i)
-			(0..m.size-1).mapTo(newSol) { (a.elementAt(it) + (rand.nextGaussian() * 0.001))}
+			(0..m.size-1).mapTo(newSol) { ((m.elementAt(it) as Double) + (rand.nextGaussian() * 0.001))}
 			
 			newPopulation.add(newSol)
 		}
 		return newPopulation
 	}
-	val myCollection = ArrayList<String>()
+	val myCollection: ArrayList<ArrayList<Number>> = ArrayList()
+	
+	//initlialise population
+	val n = 3
+	var newSol: ArrayList<Number> = ArrayList()
+	while(myCollection.size != 50){
+		newSol = ArrayList()
+		for(i in 0..n){
+			newSol.add(rand.nextDouble())
+		}
+		myCollection.add(newSol)
+	}
 	val myGA = GA(myCollection, ::fitness, ::crossover, ::mutation, 4)
+	myGA.run(500, false)
 	
 }
 
