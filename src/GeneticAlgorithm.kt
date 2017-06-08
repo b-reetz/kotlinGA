@@ -64,10 +64,10 @@ fun main(Args: Array<String>){
 		var fitnesses: MutableList<Int> = ArrayList<Int>()
 		var tmpPopulation: MutableList<String> = ArrayList<String>()
 		var tmpFitnesses: MutableList<Int> = ArrayList<Int>()
-		//population.forEach({o:String -> fitnesses.add(fitFn(o.toString()))})
+		//population.forEach({o:String -> allFitness.add(fitFn(o.toString()))})
 		
 		
-		//var max: Int = fitnesses.max()
+		//var max: Int = allFitness.max()
 		println(population.toString())
 		
 		//while(max.compareTo(16) != 0){
@@ -76,7 +76,7 @@ fun main(Args: Array<String>){
 			for(i in 1..newPopulation.size){
 				tmpPopulation.add(tournamentMaximise(newPopulation, k, fitFn))
 			}
-			//mutate two random solutions from population and perform crossover, calculate new fitnesses
+			//mutate two random solutions from population and perform crossover, calculate new allFitness
 			for(i in 0..newPopulation.size-1){
 				
 				var a = newPopulation.get(RANDOM.nextInt(newPopulation.size)) //was mutating
@@ -87,7 +87,7 @@ fun main(Args: Array<String>){
 				//tmpFitnesses.add(fitFn(c))	
 			}
 			//System.out.println(fitFn(tmpPopulation.get(0)))
-			//set the new populations and fitnesses
+			//set the new populations and allFitness
 			newPopulation = ArrayList<String>()
 			newPopulation.addAll(tmpPopulation)
 			tmpPopulation = ArrayList<String>()
