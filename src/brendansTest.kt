@@ -2,7 +2,7 @@
  * Created by Brendan on 6/8/17.
  *
  *
- */
+ 
 
 fun main(args: Array<String>) {
 
@@ -18,9 +18,9 @@ fun main(args: Array<String>) {
 
     }
 
-    val myGA = GA(myCollection, ::fitness, ::mutation, 3)
+    //val myGA = GA(myCollection, ::fitness, ::mutation, 3)
 
     myGA.run()
 
-}
+}*/
 

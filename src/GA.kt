@@ -1,7 +1,7 @@
 /**
  * Created by Brendan on 6/8/17.
 
- */
+ 
 class GA(col: Collection<*>,
          fitness: (Any?) -> Number,
          internal var mutation: () -> Unit,
@@ -10,8 +10,8 @@ class GA(col: Collection<*>,
     internal var fitnesses: Collection<Number>
 
     init {
-        fitnesses = col.map(fitness)
+       // fitnesses = col.map(fitness)
     }
 
     fun run() {}
-}
+}*/
