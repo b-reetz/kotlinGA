@@ -1,4 +1,4 @@
-import java.util.*
+import java.util.Random
 import kotlin.collections.ArrayList
 
 /**
@@ -18,7 +18,7 @@ class GA<T>(internal var col: Collection<T>,
             internal var k: Int) {
 
     //Generates the initial fitness collection
-    internal var fitnesses: Collection<Number> = col.map(fitness)
+    internal var allFitness: Collection<Number> = col.map(fitness)
 	internal var maximise: Boolean = true
 
 
@@ -46,12 +46,20 @@ class GA<T>(internal var col: Collection<T>,
             col = crossover(newPopulation).map(mutation)
 
             //Updates all of the fitness values
-            fitnesses = col.map(fitness)
+            allFitness = col.map(fitness)
 
-
-            println(findBestFitness())
+            val best = findBestFitness()
+            println(best)
+            print("\t\t" + fitness(best))
             newPopulation.clear()
         }
+        println()
+        println()
+        val best = findBestFitness()
+        println("The best solution is \n" + findBestFitness())
+        println("with the fitness of \n" + fitness(best))
+
+
     }
 
     /**
@@ -92,8 +100,8 @@ class GA<T>(internal var col: Collection<T>,
         var pos = 0
 
         for (j in 1..col.size-1) {
-            if (fitnesses.elementAt(j).toDouble() > bestFitness) {
-                bestFitness = fitnesses.elementAt(j).toDouble()
+            if (allFitness.elementAt(j).toDouble() > bestFitness) {
+                bestFitness = allFitness.elementAt(j).toDouble()
                 pos = j
             }
         }

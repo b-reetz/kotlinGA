@@ -3,28 +3,28 @@ import java.util.Random
 /**
  * A test class to
  */
-
+private val rand = Random()
 fun main(args: Array<String>) {
-
-    val random = Random()
-
     val popSize = 50
-    val rand = Random()
-//    val temp: Array<IntArray>
-    val myCollection = ArrayList<String>()
+
+    val initPopulation = ArrayList<String>()
     for (i in 0..popSize)
-        myCollection.add(String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0'))
+        initPopulation.add(String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0'))
 
 
-    /**
-     * The fitness function
-     *
-     * @param s The string to calculate fitness for
-     * @return the number of '1's in s
-     *
-     * @author Brendan
-     */
-    fun fitness(s: String) : Number = s.split('1').size - 1
+    runBasicGA(initPopulation)
+
+}
+/**
+ * The fitness function
+ *
+ * @param s The string to calculate fitness for
+ * @return the number of '1's in s
+ */
+fun fitness(s: String) : Number = s.split('1').size - 1
+
+
+private fun runBasicGA(population: Collection<String>) {
 
     /**
      * The crossover function for this GA
@@ -41,10 +41,10 @@ fun main(args: Array<String>) {
 
         while (newPopulation.size != x.size) {
             sb.setLength(0)
-            val a = x.elementAt(random.nextInt(x.size))
-            val b = x.elementAt(random.nextInt(x.size))
+            val a = x.elementAt(rand.nextInt(x.size))
+            val b = x.elementAt(rand.nextInt(x.size))
 
-            val k = random.nextInt((a.length - 2) + 1) + 2
+            val k = rand.nextInt((a.length - 2) + 1) + 2
 
             sb.append(a.substring(0, k)).append(b.substring(k, b.length))
             newPopulation.add(sb.toString())
@@ -63,8 +63,6 @@ fun main(args: Array<String>) {
         return charArray.joinToString("")
     }
 
-    val myGA = GA(myCollection, ::fitness, ::crossover, ::mutation, 4)
-    myGA.run(50)
-
+    GA(population, ::fitness, ::crossover, ::mutation, 4).run(50)
 }
 
