@@ -11,7 +11,7 @@ class GA<T>(internal var col: Collection<T>,
          internal var k: Int) {
 
 
-    internal var fitnesses: Collection<Number> = col.map(fitness)
+    internal var fitnesses: Collection<Number> = ArrayList(col.map(fitness))
 
     /**
      * Made method that kicks the GA off
@@ -19,22 +19,22 @@ class GA<T>(internal var col: Collection<T>,
      * @param x Number of iterations to execute for
      */
     fun run(x: Int) {
+        val newPopulation: ArrayList<T> = ArrayList()
         for (i in 0..x) {
-            val newPopulation = tournamentSelection(col)
+            newPopulation.addAll(tournamentSelection(col))
 
-            col = mutation(newPopulation)
-            fitnesses = col.map(fitness)
+            col = ArrayList(mutation(newPopulation))
+            fitnesses = ArrayList(col.map(fitness))
 
             println(findBestFitness(col))
+            newPopulation.clear()
         }
 
     }
 
     fun tournamentSelection(col: Collection<T>) : Collection<T> {
         val random = Random()
-
         val toReturn: ArrayList<T> = ArrayList()
-
 
         while (toReturn.size != col.size) {
             var winner = col.elementAt(random.nextInt(col.size))
@@ -42,7 +42,7 @@ class GA<T>(internal var col: Collection<T>,
             //iterate k many times, replacing winner with best selected item
             var x = 0
             while (++x < k) {
-                val contender = col.elementAt(x)
+                val contender = col.elementAt(random.nextInt(col.size))
                 if (fitness(contender).toDouble() > fitness(winner).toDouble())
                     winner = contender
             }
@@ -59,5 +59,10 @@ class GA<T>(internal var col: Collection<T>,
                 s = it
         }
         return s
+    }
+
+    fun printPopulation(col: Collection<T>) : Unit {
+        for (i in col)
+            println(i)
     }
 }

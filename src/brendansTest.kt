@@ -10,11 +10,11 @@ fun main(args: Array<String>) {
     val random = Random()
 //    val myCollection = listOf(1, 2, 3).map{""+it}
 
-    val popSize = 32
+    val popSize = 50
     val rand = Random()
-    val myCollection = ArrayList<String>(popSize)
-    for (i in myCollection.indices)
-        myCollection[i] = String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0')
+    val myCollection = ArrayList<String>()
+    for (i in 0..popSize)
+        myCollection.add(String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0'))
 
 
     /**
@@ -47,14 +47,15 @@ fun main(args: Array<String>) {
 
             val k = random.nextInt((a.length - 2) + 1) + 2
 
+
             sb.append(a.substring(0, k)).append(b.substring(k, b.length))
             newPopulation.add(sb.toString())
         }
         return newPopulation
     }
 
-    val myGA = GA(myCollection, ::fitness, ::mutation, 3)
-    myGA.run(50000)
+    val myGA = GA(myCollection, ::fitness, ::mutation, 2)
+    myGA.run(50)
 
 }
 
