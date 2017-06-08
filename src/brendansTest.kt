@@ -1,41 +1,40 @@
 import java.util.Random
 
 /**
- * Created by Brendan & Sam on 1/8/17.
- *
+ * A test class to
  */
 
 fun main(args: Array<String>) {
 
     val random = Random()
-//    val myCollection = listOf(1, 2, 3).map{""+it}
 
     val popSize = 50
     val rand = Random()
+//    val temp: Array<IntArray>
     val myCollection = ArrayList<String>()
     for (i in 0..popSize)
         myCollection.add(String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0'))
 
 
     /**
-     * TODO Write
+     * The fitness function
      *
-     * @param s
-     * @return
+     * @param s The string to calculate fitness for
+     * @return the number of '1's in s
      *
      * @author Brendan
      */
     fun fitness(s: String) : Number = s.split('1').size - 1
 
     /**
-     * TODO write
+     * The crossover function for this GA
      *
-     * @param x
-     * @return
+     * @param x Our population
+     * @return a new population that has been built up using this crossover method
      *
      * @author Brendan
      */
-    fun mutation(x: Collection<String>) : Collection<String> {
+    fun crossover(x: Collection<String>) : Collection<String> {
         val newPopulation: ArrayList<String> = ArrayList()
 
         val sb: StringBuilder = StringBuilder()
@@ -47,14 +46,24 @@ fun main(args: Array<String>) {
 
             val k = random.nextInt((a.length - 2) + 1) + 2
 
-
             sb.append(a.substring(0, k)).append(b.substring(k, b.length))
             newPopulation.add(sb.toString())
         }
         return newPopulation
     }
 
-    val myGA = GA(myCollection, ::fitness, ::mutation, 2)
+    fun mutation(x: String) : String {
+        val prob = 1/x.length
+        val charArray = x.toCharArray()
+        for (i in 0..x.length) {
+            if (rand.nextDouble() < prob)
+                charArray[i] = if (charArray[i] == '0') '1' else '0'
+
+        }
+        return charArray.joinToString("")
+    }
+
+    val myGA = GA(myCollection, ::fitness, ::crossover, ::mutation, 4)
     myGA.run(50)
 
 }

@@ -2,37 +2,62 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Created by Brendan on 6/8/17.
+ * A basic Genetic Algorithm approach to
+ *
+ * @param col The initial population
+ * @param fitness The fitness function to test against members of the population
+ * @param crossover The crossover function to apply to members within the population
+ * @param mutation The mutation function to apply to members of the population
+ * @param k The amount of rounds within the tournament selection
  *
  */
 class GA<T>(internal var col: Collection<T>,
-         internal var fitness: (T) -> Number,
-         internal var mutation: (Collection<T>) -> Collection<T>,
-         internal var k: Int) {
+            internal var fitness: (T) -> Number,
+            internal var crossover: (Collection<T>) -> Collection<T>,
+            internal var mutation: (T) -> T,
+            internal var k: Int) {
 
 
-    internal var fitnesses: Collection<Number> = ArrayList(col.map(fitness))
+    //Generates the inital fitness collection
+    internal var fitnesses: Collection<Number> = col.map(fitness)
 
     /**
-     * Made method that kicks the GA off
+     * Runs through the GA algorithm
+     *
+     * for x amount of times
+     *  creates a new population via tournament selection
+     *  applies crossover & mutation to new population and saves in original population
+     *  updates all of the fitness's
+     *  prints out the best fitness
      *
      * @param x Number of iterations to execute for
      */
     fun run(x: Int) {
         val newPopulation: ArrayList<T> = ArrayList()
         for (i in 0..x) {
+            //creates a new population via the tournamentSelection method
             newPopulation.addAll(tournamentSelection(col))
 
-            col = ArrayList(mutation(newPopulation))
-            fitnesses = ArrayList(col.map(fitness))
+            //creates new crossover population, and then mutates every solution (maybe)
+            col = crossover(newPopulation).map(mutation)
 
-            println(findBestFitness(col))
+            //Updates all of the fitness values
+            fitnesses = col.map(fitness)
+
+
+            println(findBestFitness())
             newPopulation.clear()
         }
-
     }
 
-    fun tournamentSelection(col: Collection<T>) : Collection<T> {
+    /**
+     * Performs GA tournament selection on the passed through population, return a population of the same size
+     *
+     * @param col The population to run tournament selection on
+     * @return a new population that has items that have run through tournament selection k times
+     *
+     */
+    fun tournamentSelection(col: Collection<T>): Collection<T> {
         val random = Random()
         val toReturn: ArrayList<T> = ArrayList()
 
@@ -48,17 +73,26 @@ class GA<T>(internal var col: Collection<T>,
             }
             toReturn.add(winner)
         }
-
         return toReturn
     }
 
-    fun findBestFitness(col: Collection<T>) : T {
-        var s: T = col.elementAt(0)
-        col.forEach {
-            if (fitness(it).toDouble() > fitness(s).toDouble())
-                s = it
+    /**
+     * Finds the best solution within the population and returns it
+     * Uses the default toString method for the generic object
+     *
+     * @return the best solution
+     */
+    fun findBestFitness(): T {
+        var bestFitness: Double = 0.0
+        var pos = 0
+
+        for (j in 1..col.size-1) {
+            if (fitnesses.elementAt(j).toDouble() > bestFitness) {
+                bestFitness = fitnesses.elementAt(j).toDouble()
+                pos = j
+            }
         }
-        return s
+        return col.elementAt(pos)
     }
 
 }

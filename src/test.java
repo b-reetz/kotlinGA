@@ -15,8 +15,11 @@ public class test {
         for (int i = 0; i < X.length; i++) {
             X[i] = String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0');
         }
+        int[][] temp;
 
     }
+
+
 
 
 //System.arraycopy( src, 0, dest, 0, src.length );
