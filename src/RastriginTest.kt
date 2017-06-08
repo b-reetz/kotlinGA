@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
     var newSol: ArrayList<Number>
     while (myCollection.size != 50) {
         newSol = ArrayList()
-        for (i in 0..n) {
+        for (i in 1..n) {
             newSol.add(rand.nextDouble())
         }
         myCollection.add(newSol)
@@ -74,7 +74,7 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
                 .mapTo(newSol) { (it as Double) + (rand.nextGaussian() * 0.001) }
         return newSol
     }
-    GA(population, ::fitness, ::crossover, ::mutation, 4).run(500, false)
+    GA(population, ::fitness, ::crossover, ::mutation, 4).run(5000, false)
 }
 
  
