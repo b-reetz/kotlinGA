@@ -61,8 +61,4 @@ class GA<T>(internal var col: Collection<T>,
         return s
     }
 
-    fun printPopulation(col: Collection<T>) : Unit {
-        for (i in col)
-            println(i)
-    }
 }
