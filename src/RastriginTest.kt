@@ -4,8 +4,7 @@
  */
 import java.util.Random
 
-val rand = Random()
-
+private val rand = Random()
 fun main(args: Array<String>){
 	
 	fun formula(d: Double): Double{
@@ -26,7 +25,7 @@ fun main(args: Array<String>){
 
 	
 	fun crossover(col: Collection<Collection<Number>>): Collection<Collection<Number>>{
-		var k = 1 + rand.nextInt(a.size-2)
+		var k = 1 + rand.nextInt(col.size-2)
 		var newPopulation : ArrayList<ArrayList<Number>> = ArrayList()
 		
 		var newItem = ArrayList<Number>()
@@ -59,19 +58,18 @@ fun main(args: Array<String>){
 		}
 			
 	}
-	
-	fun mutation(a: Collection<Collection<Number>>): Collection<Collection<Number>>{
-		val newPopulation: ArrayList<ArrayList<Number>> = ArrayList()
-		var newSol: ArrayList<Number> = ArrayList()
-		var i = 0
-		for(i in 0..a.size-1){
-			newSol = ArrayList()
-			val m = a.elementAt(i)
-			(0..m.size-1).mapTo(newSol) { ((m.elementAt(it) as Double) + (rand.nextGaussian() * 0.001))}
-			
-			newPopulation.add(newSol)
+
+	fun mutation(x: Collection<Number>) : Collection<Number> {
+		val prob = 1/x.size
+		val toReturn: ArrayList<Double> = ArrayList()
+
+		for (i in x) {
+			if (rand.nextDouble() < prob)
+				toReturn.add(i.toDouble() + (rand.nextGaussian() * 0.01))
+			else
+				toReturn.add(i.toDouble())
 		}
-		return newPopulation
+		return toReturn
 	}
 	val myCollection: ArrayList<ArrayList<Number>> = ArrayList()
 	
@@ -85,7 +83,7 @@ fun main(args: Array<String>){
 		}
 		myCollection.add(newSol)
 	}
-	val myGA = GA(myCollection, ::fitness, ::crossover, ::mutation, 4)
+	val myGA = GA<Collection<Number>>(myCollection, ::fitness, ::crossover, ::mutation, 4)
 	myGA.run(500, false)
 	
 }

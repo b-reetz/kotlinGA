@@ -4,8 +4,8 @@ import java.util.Random
  * A test class to test the sphere function works with the given type of Genetic Algorithm Class
  */
 
+private val rand = Random()
 fun main(args: Array<String>) {
-    val random = Random()
     val popSize = 200 //size of the population
     val sphereN = 5 //size of the vectors each member of the population holds
 
@@ -15,23 +15,28 @@ fun main(args: Array<String>) {
     for (i in 0..popSize) {
         val temp: ArrayList<Double> = ArrayList()
         for (j in 0..sphereN-1)
-            temp.add(random.nextGaussian())
+            temp.add(rand.nextGaussian())
         initPopulation.add(temp)
     }
 
-
     runBasicGA(initPopulation)
 
+    //TODO more GA's here
 }
 
+/**
+ *
+ *
+ * @param col the given member of the population to calculate the fitness for
+ * @return the fitness of this member of the population
+ */
 private fun fitness(col: Collection<Number>): Number {
     return col.reduce{total, next -> total.toDouble() + Math.pow(next.toDouble(), 2.0)}
 }
 /**
- * A method to test the basic GA method against
+ * The basic GA method
  */
 private fun runBasicGA(population: Collection<Collection<Number>>) {
-    val rand = Random()
 
     /**
      * The crossover function for this GA
@@ -61,6 +66,12 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
         return newPopulation
     }
 
+    /**
+     * Mutates a given member of the population, and returns it
+     *
+     * @param x the member of the population to mutate
+     * @return the mutated member of the population
+     */
     fun mutation(x: Collection<Number>) : Collection<Number> {
         val prob = 1/x.size
         val toReturn: ArrayList<Double> = ArrayList()
@@ -74,5 +85,6 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
         return toReturn
     }
 
+    //runs the GA with the given parameters, preferring a small fitness
     GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(200, false)
 }

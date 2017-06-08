@@ -3,8 +3,9 @@ import java.util.Random
 /**
  * Tests out the rosenbrook function
  */
+
+private val rand = Random()
 fun main(args: Array<String>) {
-    val random = Random()
     val popSize = 200 //size of the population
     val sphereN = 10 //size of the vectors each member of the population holds
 
@@ -14,7 +15,7 @@ fun main(args: Array<String>) {
     for (i in 0..popSize) {
         val temp: ArrayList<Double> = ArrayList()
         for (j in 0..sphereN-1)
-            temp.add(random.nextGaussian())
+            temp.add(rand.nextGaussian())
         initPopulation.add(temp)
     }
 
@@ -44,10 +45,9 @@ private fun fitness(col: Collection<Number>): Number {
 
 
 /**
- * A method to test the basic GA method
+ * The basic GA method
  */
 private fun runBasicGA(population: Collection<Collection<Number>>) {
-    val rand = Random()
 
     /**
      * The crossover function for this GA
@@ -96,5 +96,6 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
         return toReturn
     }
 
+    //Runs the GA with the given parameters, preferring lower fitness values
     GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(50000, false)
 }
