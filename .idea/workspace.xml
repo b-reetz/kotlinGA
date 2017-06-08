@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c01ef8f-a6a4-4675-abdb-b69be3f1ae32" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/brendansTest.kt" afterPath="$PROJECT_DIR$/src/SphereFunctionTest.kt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/RosenbrookFunctionsTest.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GA.kt" afterPath="$PROJECT_DIR$/src/GA.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GeneticAlgorithm.kt" afterPath="$PROJECT_DIR$/src/GeneticAlgorithm.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SphereFunctionTest.kt" afterPath="$PROJECT_DIR$/src/SphereFunctionTest.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test.java" afterPath="$PROJECT_DIR$/src/test.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,17 +21,17 @@
       <file leaf-file-name="GeneticAlgorithm.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GeneticAlgorithm.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
+            <state relative-caret-position="-81">
               <caret line="116" column="0" lean-forward="false" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GA.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GA.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GA.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
+            <state relative-caret-position="888">
               <caret line="59" column="57" lean-forward="false" selection-start-line="59" selection-start-column="57" selection-end-line="59" selection-end-column="57" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
@@ -43,8 +43,18 @@
       <file leaf-file-name="SphereFunctionTest.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SphereFunctionTest.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="77" lean-forward="false" selection-start-line="9" selection-start-column="77" selection-end-line="9" selection-end-column="77" />
+            <state relative-caret-position="442">
+              <caret line="26" column="8" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RosenbrookFunctionsTest.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/RosenbrookFunctionsTest.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="31" lean-forward="true" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -53,9 +63,11 @@
       <file leaf-file-name="test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="8" lean-forward="false" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="21" />
-              <folding />
+            <state relative-caret-position="357">
+              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="32" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,10 +78,10 @@
             <state relative-caret-position="170">
               <caret line="10" column="61" lean-forward="false" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
               <folding>
-                <marker date="1496926817265" expanded="true" signature="54840:54857" ph="..." />
-                <marker date="1496926817265" expanded="true" signature="54840:54875" ph="..." />
-                <marker date="1496926817265" expanded="true" signature="54840:54888" ph="..." />
-                <marker date="1496926817265" expanded="true" signature="54840:54903" ph="..." />
+                <marker date="1496929226774" expanded="true" signature="56514:56531" ph="..." />
+                <marker date="1496929226774" expanded="true" signature="56514:56549" ph="..." />
+                <marker date="1496929226774" expanded="true" signature="56514:56562" ph="..." />
+                <marker date="1496929226774" expanded="true" signature="56514:56577" ph="..." />
               </folding>
             </state>
           </provider>
@@ -80,8 +92,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin File" />
         <option value="Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -110,10 +122,11 @@
         <option value="$PROJECT_DIR$/src/GA.java" />
         <option value="$PROJECT_DIR$/src/testObject.java" />
         <option value="$PROJECT_DIR$/src/GeneticAlgorithm.kt" />
-        <option value="$PROJECT_DIR$/src/test.java" />
         <option value="$PROJECT_DIR$/src/brendansTest.kt" />
         <option value="$PROJECT_DIR$/src/GA.kt" />
         <option value="$PROJECT_DIR$/src/SphereFunctionTest.kt" />
+        <option value="$PROJECT_DIR$/src/test.java" />
+        <option value="$PROJECT_DIR$/src/RosenbrookFunctionsTest.kt" />
       </list>
     </option>
   </component>
@@ -712,7 +725,14 @@
       <option name="project" value="LOCAL" />
       <updated>1496921865518</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Made the sphere class to test against the multiple GA classes coming">
+      <created>1496927035298</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1496927035298</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -790,7 +810,8 @@
     <MESSAGE value="Fixed tournament selection bug" />
     <MESSAGE value="Removed useless code" />
     <MESSAGE value="Added a lot of comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added a lot of comments" />
+    <MESSAGE value="Made the sphere class to test against the multiple GA classes coming" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made the sphere class to test against the multiple GA classes coming" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -848,10 +869,10 @@
         <state relative-caret-position="170">
           <caret line="10" column="61" lean-forward="false" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
           <folding>
-            <marker date="1496926817265" expanded="true" signature="54840:54857" ph="..." />
-            <marker date="1496926817265" expanded="true" signature="54840:54875" ph="..." />
-            <marker date="1496926817265" expanded="true" signature="54840:54888" ph="..." />
-            <marker date="1496926817265" expanded="true" signature="54840:54903" ph="..." />
+            <marker date="1496929226774" expanded="true" signature="56514:56531" ph="..." />
+            <marker date="1496929226774" expanded="true" signature="56514:56549" ph="..." />
+            <marker date="1496929226774" expanded="true" signature="56514:56562" ph="..." />
+            <marker date="1496929226774" expanded="true" signature="56514:56577" ph="..." />
           </folding>
         </state>
       </provider>
@@ -913,14 +934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/GeneticAlgorithm.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="116" column="0" lean-forward="false" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/kotlinGA.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -945,29 +958,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/GA.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="888">
+          <caret line="59" column="57" lean-forward="false" selection-start-line="59" selection-start-column="57" selection-end-line="59" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GeneticAlgorithm.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-81">
+          <caret line="116" column="0" lean-forward="false" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="8" lean-forward="false" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="21" />
-          <folding />
+        <state relative-caret-position="357">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="32" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SphereFunctionTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="77" lean-forward="false" selection-start-line="9" selection-start-column="77" selection-end-line="9" selection-end-column="77" />
+        <state relative-caret-position="442">
+          <caret line="26" column="8" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/GA.kt">
+    <entry file="file://$PROJECT_DIR$/src/RosenbrookFunctionsTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="59" column="57" lean-forward="false" selection-start-line="59" selection-start-column="57" selection-end-line="59" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="85">
+          <caret line="5" column="31" lean-forward="true" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>

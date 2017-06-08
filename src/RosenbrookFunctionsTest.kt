@@ -1,13 +1,12 @@
 import java.util.Random
 
 /**
- * A test class to test the sphere function works with the given type of Genetic Algorithm Class
+ * Tests out the rosenbrook function
  */
-
 fun main(args: Array<String>) {
     val random = Random()
     val popSize = 200 //size of the population
-    val sphereN = 5 //size of the vectors each member of the population holds
+    val sphereN = 10 //size of the vectors each member of the population holds
 
     val initPopulation: ArrayList<ArrayList<Double>> = ArrayList()
 
@@ -19,16 +18,33 @@ fun main(args: Array<String>) {
         initPopulation.add(temp)
     }
 
-
     runBasicGA(initPopulation)
 
 }
 
-private fun fitness(col: Collection<Number>): Number {
-    return col.reduce{total, next -> total.toDouble() + Math.pow(next.toDouble(), 2.0)}
-}
 /**
- * A method to test the basic GA method against
+ * Applies the rosenbrook function to a member of the population
+ *
+ * @param col the member of the population (a list of doubles)
+ * @return the fitness value for the given member of the population
+ */
+private fun fitness(col: Collection<Number>): Number {
+    var total = 0.0
+
+    val inDoubles: List<Double> = col.map{it.toDouble()}
+
+    for (i in 0..col.size - 1 - 1) {
+        val first = inDoubles[i + 1] - inDoubles[i] * inDoubles[i]
+        val second = 100 * (first * first) //100(xi+1 - xi^2)^2
+        val third = (inDoubles[i] - 1) * (inDoubles[i] - 1) //(xi - 1) ^ 2
+        total += second + third
+    }
+    return total
+}
+
+
+/**
+ * A method to test the basic GA method
  */
 private fun runBasicGA(population: Collection<Collection<Number>>) {
     val rand = Random()
@@ -61,18 +77,24 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
         return newPopulation
     }
 
+    /**
+     * Mutates a given population and returns
+     *
+     * @param x the member of the population
+     * @return the same member of the population, but mutated
+     */
     fun mutation(x: Collection<Number>) : Collection<Number> {
         val prob = 1/x.size
         val toReturn: ArrayList<Double> = ArrayList()
 
         for (i in x) {
             if (rand.nextDouble() < prob)
-                toReturn.add(i.toDouble() + (rand.nextGaussian() * 0.0001))
+                toReturn.add(i.toDouble() + (rand.nextGaussian() * 0.01))
             else
                 toReturn.add(i.toDouble())
         }
         return toReturn
     }
 
-    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(200, false)
+    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(50000, false)
 }
