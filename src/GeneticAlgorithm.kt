@@ -2,8 +2,7 @@
  * Created by Brendan on 6/7/17.
  *
  */
-
-import java.util.*
+import java.util.Random
 
 private val RANDOM = Random()
 
@@ -12,13 +11,11 @@ fun main(Args: Array<String>){
 	println("Sam says hi too")
 
 
-
-/**
+    /**
      * SAMSSSSSSSSSSSSSSSSSSSS
      */
-
-
-	fun tournamentMaximise(pop: List<Any>, K: Int, fitFn: (v : Any) -> Int): Any{
+	
+	fun tournamentMaximise(pop: List<String>, K: Int, fitFn: (v : String) -> Int): String{
 		//get a random solution from population
 		var winner = pop.get(RANDOM.nextInt(pop.size))
 		//for the duration of the tournament
@@ -33,7 +30,7 @@ fun main(Args: Array<String>){
 		//the winner is returned to the main algorithm
 		return winner
 	}
-
+	
 	fun tournamentMinimise(pop: List<Any>, K: Int, fitFn: (v : Any) -> Int): Any{
 		//get a random solution from population
 		var winner = pop.get(RANDOM.nextInt(pop.size))
@@ -49,63 +46,69 @@ fun main(Args: Array<String>){
 		//the winner is returned to the main algorithm
 		return winner
 	}
+	
+	fun copy(s: String): String{
+		var s = "";
+		for(c in s.toCharArray()){
+			s += c
+		}
+		return s
+	}
+	
 
-
-	fun baseGA(population: ArrayList<Any>, fitFn: (v : Any) -> Int, mutate: (o: Any) -> Any, k: Int , crossover: (m: Any, n: Any) -> Any) {
+	fun baseGA(population: ArrayList<String>, fitFn: (v : String) -> Int, mutate: (o: String) -> String, k: Int , crossover: (m: String, n: String) -> String) {
 		//lists to store various Collections
-		var newPopulation: MutableList<Any> = population
+		var newPopulation: MutableList<String> = population
 		var fitnesses: MutableList<Int> = ArrayList<Int>()
-		var tmpPopulation: MutableList<Any> = ArrayList<Any>()
+		var tmpPopulation: MutableList<String> = ArrayList<String>()
 		var tmpFitnesses: MutableList<Int> = ArrayList<Int>()
-		population.forEach({o:Any -> fitnesses.add(fitFn(o))})
-
-
+		//population.forEach({o:String -> fitnesses.add(fitFn(o.toString()))})
+		
+		
 		//var max: Int = fitnesses.max()
-
+		
 		//while(max.compareTo(16) != 0){
-		for(count in 1..100000){
+		for(count in 1..10){
 			//initilase the selected population using tournament selection
 			for(i in 1..newPopulation.size){
 				tmpPopulation.add(tournamentMaximise(newPopulation, k, fitFn))
 			}
 			//mutate two random solutions from population and perform crossover, calculate new fitnesses
-			for(i in 1..newPopulation.size){
-
-				var a = mutate(newPopulation.get(RANDOM.nextInt(newPopulation.size)))
-				var b = mutate(newPopulation.get(RANDOM.nextInt(newPopulation.size)))
+			for(i in 0..newPopulation.size-1){
+				
+				var a = newPopulation.get(RANDOM.nextInt(newPopulation.size)) //was mutating
+				var b = newPopulation.get(RANDOM.nextInt(newPopulation.size)) //was mutating
 				var c = crossover(a, b)
+				//System.err.println(c)
 				tmpPopulation.set(i, c)
-				tmpFitnesses.set(i, fitFn(c))
+				//tmpFitnesses.add(fitFn(c))	
 			}
+			System.out.println(fitFn(tmpPopulation.get(0)))
 			//set the new populations and fitnesses
-			newPopulation = tmpPopulation
-			fitnesses = tmpFitnesses
+			newPopulation = ArrayList<String>()
+			newPopulation.addAll(tmpPopulation)
+			tmpPopulation = ArrayList<String>()
+			println(count)
 		}
-
-		var maxIndex: Int = fitnesses.indexOf(fitnesses.max())
+		fitnesses.clear()
+		for(x in newPopulation){
+			fitnesses.add(fitFn(x))
+		}
+		
+		var maxIndex = fitnesses.indexOf(fitnesses.max())
 		//print the best Solution
-		println(newPopulation.get(maxIndex))
+		System.out.println(fitnesses.max())
+		System.out.println(newPopulation.get(maxIndex))
 	}
 
-
-
-
-/********TEST SAMS CODE HERE********/
-
+	
+	
+	//********TEST SAMS CODE HERE********//
 
 	fun fit(s:String): Int{
-		var sArr = s.toCharArray()
-		var total: Int = 0
-
-		for(c in sArr){
-			if(s.equals('1')){
-				total++
-			}
-
-		}
-
-		return total
+		return s.split('1').size -1
 	}
+	
 	fun mutate(s: String): String{
 		var sArr = s.toCharArray()
 		for(i in 0..(sArr.size-1)){
@@ -118,40 +121,38 @@ fun main(Args: Array<String>){
 				}
 			}
 		}
-		return sArr.contentToString()
+		return sArr.joinToString("")
 	}
-
+	
 	fun onePointCrossover(a: String, b: String): String{
 		var aLen: Int = a.length
 		//var bLen: Int = b.length
 		//var diff: Int = aLen - bLen
-		var cutPoint: Int = RANDOM.nextInt(aLen)/aLen//if(diff > -1) RANDOM.nextInt(aLen)/aLen else RANDOM.nextInt(bLen)/bLen
-
-
-		return a.substring(0, cutPoint-1) + b.substring(cutPoint, aLen)
+		var cutPoint: Int = RANDOM.nextInt(aLen)//if(diff > -1) RANDOM.nextInt(aLen)/aLen else RANDOM.nextInt(bLen)/bLen
+		
+		return a.substring(0, cutPoint) + b.substring(cutPoint, aLen)
 	}
 
-
+	
 	var pop: ArrayList<String> = ArrayList<String>()
 	for(c in 1..10){
 		var str: String = ""
-		for(d in 1..16){
-			str += RANDOM.nextInt(2).toString()
+		for(d in 1..8){
+			str += RANDOM.nextInt(2)	
 		}
 		pop.add(str)
-		str = ""
+
+		//str = ""
 	}
-
-	// need to sort generics so this works.
-//	baseGA(pop, fit, mutate, 8, onePointCrossover)
-
-
-
-
-
-
-/***********************************/
-
+	
+	// need to sort generics so this works. 
+	baseGA(pop, ::fit, ::mutate, 8, ::onePointCrossover)
+	
+	
+	
+	
+	
+	//***********************************//
 
 
 
@@ -159,13 +160,10 @@ fun main(Args: Array<String>){
 
 
 
-
-/**
+    /**
      * BRENDANSSSSSSSSSSSSSSSSSS
      */
-
 
     //Look at the other two files
 
 }
-
