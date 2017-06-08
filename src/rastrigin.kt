@@ -26,16 +26,17 @@ fun main(args: Array<String>){
 
 	
 	fun crossover(col: Collection<Collection<Number>>): Collection<Collection<Number>>{
-		var k = 1 + rand.nextInt(a.size-2)
-		var newPopulation : ArrayList<ArrayList<Number>> = ArrayList()
 		
-		var newItem = ArrayList<Number>()
+		val newPopulation : ArrayList<ArrayList<Number>> = ArrayList()
+		
+		var newItem: ArrayList<Number>
 		while(newPopulation.size < col.size){
 			newItem = ArrayList()
 			val a = col.elementAt(rand.nextInt(col.size))
 			val b = col.elementAt(rand.nextInt(col.size))
-			
-			val k = 1 + rand.nextInt(col.size-2)
+			System.out.println(a.toString())
+			val k = 2 + rand.nextInt((a.size-2) +1) 
+			System.err.println(k)
 			
 			(0..k-1).mapTo(newItem) { a.elementAt(it)}
 			(k..a.size-1).mapTo(newItem) { b.elementAt(it)}
@@ -60,23 +61,23 @@ fun main(args: Array<String>){
 			
 	}
 	
-	fun mutation(a: Collection<Collection<Number>>): Collection<Collection<Number>>{
-		val newPopulation: ArrayList<ArrayList<Number>> = ArrayList()
+	fun mutation(a: Collection<Number>): Collection<Number>{
+		
 		var newSol: ArrayList<Number> = ArrayList()
 		var i = 0
 		for(i in 0..a.size-1){
 			newSol = ArrayList()
 			val m = a.elementAt(i)
-			(0..m.size-1).mapTo(newSol) { ((m.elementAt(it) as Double) + (rand.nextGaussian() * 0.001))}
+			newSol.add((m as Double) + (rand.nextGaussian() * 0.001))
 			
-			newPopulation.add(newSol)
+			//newPopulation.add(newSol)
 		}
-		return newPopulation
+		return newSol
 	}
 	val myCollection: ArrayList<ArrayList<Number>> = ArrayList()
 	
 	//initlialise population
-	val n = 3
+	val n = 7
 	var newSol: ArrayList<Number> = ArrayList()
 	while(myCollection.size != 50){
 		newSol = ArrayList()
@@ -86,7 +87,7 @@ fun main(args: Array<String>){
 		myCollection.add(newSol)
 	}
 	val myGA = GA(myCollection, ::fitness, ::crossover, ::mutation, 4)
-	myGA.run(500, false)
+	myGA.run(100, false)
 	
 }
 
