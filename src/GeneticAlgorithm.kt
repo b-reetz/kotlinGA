@@ -80,6 +80,7 @@ fun main(Args: Array<String>){
 		}
 		
 		var maxIndex: Int = fitnesses.indexOf(fitnesses.max())
+		//print the best Solution
 		println(newPopulation.get(maxIndex))
 	}
 
@@ -125,6 +126,19 @@ fun main(Args: Array<String>){
 		return a.substring(0, cutPoint-1) + b.substring(cutPoint, aLen)
 	}
 
+	
+	var pop: ArrayList<String> = ArrayList<String>()
+	for(c in 1..10){
+		var str: String = ""
+		for(d in 1..16){
+			str += RANDOM.nextInt(2).toString()		
+		}
+		pop.add(str)
+		str = ""
+	}
+	
+	// need to sort generics so this works. 
+	baseGA(pop, fit, mutate, 8, onePointCrossover)
 	
 	
 	
