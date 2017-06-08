@@ -66,9 +66,10 @@ fun main(Args: Array<String>){
 		
 		
 		//var max: Int = fitnesses.max()
+		println(population.toString())
 		
 		//while(max.compareTo(16) != 0){
-		for(count in 1..10){
+		for(count in 1..20){
 			//initilase the selected population using tournament selection
 			for(i in 1..newPopulation.size){
 				tmpPopulation.add(tournamentMaximise(newPopulation, k, fitFn))
@@ -80,10 +81,10 @@ fun main(Args: Array<String>){
 				var b = newPopulation.get(RANDOM.nextInt(newPopulation.size)) //was mutating
 				var c = crossover(a, b)
 				//System.err.println(c)
-				tmpPopulation.set(i, c)
+				tmpPopulation.add(c)
 				//tmpFitnesses.add(fitFn(c))	
 			}
-			System.out.println(fitFn(tmpPopulation.get(0)))
+			//System.out.println(fitFn(tmpPopulation.get(0)))
 			//set the new populations and fitnesses
 			newPopulation = ArrayList<String>()
 			newPopulation.addAll(tmpPopulation)
@@ -99,6 +100,7 @@ fun main(Args: Array<String>){
 		//print the best Solution
 		System.out.println(fitnesses.max())
 		System.out.println(newPopulation.get(maxIndex))
+		println(newPopulation)
 	}
 
 	
@@ -128,7 +130,7 @@ fun main(Args: Array<String>){
 		var aLen: Int = a.length
 		//var bLen: Int = b.length
 		//var diff: Int = aLen - bLen
-		var cutPoint: Int = RANDOM.nextInt(aLen)//if(diff > -1) RANDOM.nextInt(aLen)/aLen else RANDOM.nextInt(bLen)/bLen
+		var cutPoint: Int = 1 + RANDOM.nextInt(aLen-2)//if(diff > -1) RANDOM.nextInt(aLen)/aLen else RANDOM.nextInt(bLen)/bLen
 		
 		return a.substring(0, cutPoint) + b.substring(cutPoint, aLen)
 	}
@@ -145,10 +147,24 @@ fun main(Args: Array<String>){
 		//str = ""
 	}
 	
+	//fun Array<BooleanArray>.copy() = Array(size) { get(it).clone() }
 	// need to sort generics so this works. 
 	baseGA(pop, ::fit, ::mutate, 8, ::onePointCrossover)
 	
+	/*println(onePointCrossover("10101010", "01010101"))
 	
+	var a1: ArrayList<Int> = ArrayList<Int>()
+	for(i in 1..4)
+		a1.add(i)
+	println("1: " + a1)
+	var a2: ArrayList<Int> = ArrayList<Int>()
+	//System.arraycopy(a1, 0, a2, 0, a1.size -1)
+	
+	//a1.clear()
+	
+	println("1: " + a1)
+	println("2: " + a2)
+ */
 	
 	
 	

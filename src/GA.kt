@@ -15,18 +15,18 @@ class GA(col: Collection<*>,
 class GA<T>(internal var col: Collection<T>,
          internal var fitness: (T) -> Number,
          internal var mutation: (Collection<T>) -> Collection<T>,
->>>>>>> 9d4b9912bea2d0ba26680f8589925c4047f2461d
+
          internal var k: Int) {
 
 
-<<<<<<< HEAD
+
     init {
        // fitnesses = col.map(fitness)
     }
 
     fun run() {}
-}*/
-=======
+
+
     internal var fitnesses: Collection<Number> = col.map(fitness)
 
     /**
@@ -77,4 +77,4 @@ class GA<T>(internal var col: Collection<T>,
         return s
     }
 }
->>>>>>> 9d4b9912bea2d0ba26680f8589925c4047f2461d
+
