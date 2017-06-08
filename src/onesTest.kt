@@ -12,7 +12,6 @@ fun main(args: Array<String>) {
     for (i in 0..popSize)
         initPopulation.add(String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0'))
 
-
     runBasicGA(initPopulation)
 
 }

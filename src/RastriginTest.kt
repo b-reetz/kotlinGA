@@ -25,11 +25,23 @@ fun main(args: Array<String>) {
 }
 
 
+/**
+ * The Rastrigin function applied to a double
+ *
+ * @param d the double to apply the rastrigin function to
+ * @return the resulting value
+ */
 private fun formula(d: Double): Double {
     //((x[i] * x[i]) - (10 * Math.cos(2 * Math.PI * x[i])));
     return (d * d) - (10 * Math.cos(2 * Math.PI * d))
 }
 
+/**
+ * Calculates the fitness for a given member of the population using the Rastrigin function
+ *
+ * @param a the member of the population
+ * @return the fitness for this member of the population
+ */
 private fun fitness(a: Collection<Number>): Number {
     val result: Double = 10.0 * a.size + a.sumByDouble { formula(it as Double) }
     return result
@@ -65,6 +77,12 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
         return newPopulation
     }
 
+    /**
+     * Gets given a member of the population, mutates and returns it
+     *
+     * @param a member of the population
+     * @return the mutated member of the population
+     */
     fun mutation(a: Collection<Number>): Collection<Number> {
 
         val newSol: ArrayList<Number> = ArrayList()
@@ -74,7 +92,13 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
                 .mapTo(newSol) { (it as Double) + (rand.nextGaussian() * 0.001) }
         return newSol
     }
+<<<<<<< HEAD
     GA(population, ::fitness, ::crossover, ::mutation, 4).run(5000, false)
+=======
+
+    //runs the GA
+    GA(population, ::fitness, ::crossover, ::mutation, 4).run(500, false)
+>>>>>>> e08f04dddfb10bdd91773f1c73f3ab80b9090303
 }
 
  
