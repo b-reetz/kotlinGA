@@ -1,26 +1,60 @@
+import java.util.Random
+
 /**
- * Created by Brendan on 6/8/17.
- *
+ * Created by Brendan & Sam on 1/8/17.
  *
  */
 
 fun main(args: Array<String>) {
 
-    val myCollection = listOf(1, 2, 3)
-    fun fitness(x: Any?) : Number {
-        if (x is Int) println(x+1)
+    val random = Random()
+//    val myCollection = listOf(1, 2, 3).map{""+it}
 
-        if (x is Int) return x+1
-        else return -1
-    }
+    val popSize = 32
+    val rand = Random()
+    val myCollection = ArrayList<String>(popSize)
+    for (i in myCollection.indices)
+        myCollection[i] = String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0')
 
-    fun mutation() : Unit {
 
+    /**
+     * TODO Write
+     *
+     * @param s
+     * @return
+     *
+     * @author Brendan
+     */
+    fun fitness(s: String) : Number = s.split('1').size - 1
+
+    /**
+     * TODO write
+     *
+     * @param x
+     * @return
+     *
+     * @author Brendan
+     */
+    fun mutation(x: Collection<String>) : Collection<String> {
+        val newPopulation: ArrayList<String> = ArrayList()
+
+        val sb: StringBuilder = StringBuilder()
+
+        while (newPopulation.size != x.size) {
+            sb.setLength(0)
+            val a = x.elementAt(random.nextInt(x.size))
+            val b = x.elementAt(random.nextInt(x.size))
+
+            val k = random.nextInt((a.length - 2) + 1) + 2
+
+            sb.append(a.substring(0, k)).append(b.substring(k, b.length))
+            newPopulation.add(sb.toString())
+        }
+        return newPopulation
     }
 
     val myGA = GA(myCollection, ::fitness, ::mutation, 3)
-
-    myGA.run()
+    myGA.run(50000)
 
 }
 
