@@ -97,5 +97,5 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
     }
 
     //Runs the GA with the given parameters, preferring lower fitness values
-    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(50000, false)
+    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(200, false)
 }
