@@ -7,6 +7,7 @@ private val rand = Random()
 fun main(args: Array<String>) {
     val popSize = 50
 
+    //generates the initial population
     val initPopulation = ArrayList<String>()
     for (i in 0..popSize)
         initPopulation.add(String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0'))
@@ -27,12 +28,10 @@ fun fitness(s: String) : Number = s.split('1').size - 1
 private fun runBasicGA(population: Collection<String>) {
 
     /**
-     * The crossover function for this GA
+     * The crossover function for the bit strings
      *
      * @param x Our population
      * @return a new population that has been built up using this crossover method
-     *
-     * @author Brendan
      */
     fun crossover(x: Collection<String>) : Collection<String> {
         val newPopulation: ArrayList<String> = ArrayList()
@@ -52,6 +51,12 @@ private fun runBasicGA(population: Collection<String>) {
         return newPopulation
     }
 
+    /**
+     * Takes in a member of the population and will flip a bit, based on a random value (low probability)
+     *
+     * @param x The member of the population to mutate
+     * @return the mutated member of the population
+     */
     fun mutation(x: String) : String {
         val prob = 1/x.length
         val charArray = x.toCharArray()
@@ -63,6 +68,7 @@ private fun runBasicGA(population: Collection<String>) {
         return charArray.joinToString("")
     }
 
+    //Runs the GA, favouring a higher fitness value
     GA(population, ::fitness, ::crossover, ::mutation, 4).run(50)
 }
 

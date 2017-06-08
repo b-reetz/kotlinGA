@@ -48,6 +48,7 @@ private fun fitness(col: Collection<Number>): Number {
  * The basic GA method
  */
 private fun runBasicGA(population: Collection<Collection<Number>>) {
+    val rand = Random()
 
     /**
      * The crossover function for this GA
@@ -97,5 +98,5 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
     }
 
     //Runs the GA with the given parameters, preferring lower fitness values
-    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(200, false)
+    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(50000, false)
 }

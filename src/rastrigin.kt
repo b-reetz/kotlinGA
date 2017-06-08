@@ -4,7 +4,7 @@
  */
 import java.util.Random
 
-val rand = Random()
+private val rand = Random()
 
 fun main(args: Array<String>){
 	
