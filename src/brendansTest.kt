@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     val random = Random()
 //    val myCollection = listOf(1, 2, 3).map{""+it}
 
-    val popSize = 50
+    val popSize = 100
     val rand = Random()
     val myCollection = ArrayList<String>()
     for (i in 0..popSize)
@@ -54,8 +54,8 @@ fun main(args: Array<String>) {
         return newPopulation
     }
 
-    val myGA = GA(myCollection, ::fitness, ::mutation, 2)
-    myGA.run(50)
+    val myGA = GA(myCollection, ::fitness, ::mutation, 3)
+    myGA.run(100, false)
 
 }
 

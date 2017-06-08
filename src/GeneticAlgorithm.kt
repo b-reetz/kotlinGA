@@ -31,6 +31,8 @@ fun main(Args: Array<String>){
 		return winner
 	}
 	
+	
+	
 	fun tournamentMinimise(pop: List<Any>, K: Int, fitFn: (v : Any) -> Int): Any{
 		//get a random solution from population
 		var winner = pop.get(RANDOM.nextInt(pop.size))
@@ -149,10 +151,10 @@ fun main(Args: Array<String>){
 	
 	//fun Array<BooleanArray>.copy() = Array(size) { get(it).clone() }
 	// need to sort generics so this works. 
-	baseGA(pop, ::fit, ::mutate, 8, ::onePointCrossover)
+	//baseGA(pop, ::fit, ::mutate, 8, ::onePointCrossover)
 	
-	/*println(onePointCrossover("10101010", "01010101"))
-	
+	println(mutate("10101010"))//, "01010101"))
+	/*
 	var a1: ArrayList<Int> = ArrayList<Int>()
 	for(i in 1..4)
 		a1.add(i)

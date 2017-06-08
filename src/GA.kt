@@ -12,17 +12,20 @@ class GA<T>(internal var col: Collection<T>,
 
 
     internal var fitnesses: Collection<Number> = ArrayList(col.map(fitness))
+	internal var maximise: Boolean = true
+	
 
     /**
      * Made method that kicks the GA off
      *
      * @param x Number of iterations to execute for
      */
-    fun run(x: Int) {
+    fun run(x: Int, max: Boolean = true) {
         val newPopulation: ArrayList<T> = ArrayList()
+		maximise = max
         for (i in 0..x) {
             newPopulation.addAll(tournamentSelection(col))
-
+            
             col = ArrayList(mutation(newPopulation))
             fitnesses = ArrayList(col.map(fitness))
 
@@ -43,9 +46,10 @@ class GA<T>(internal var col: Collection<T>,
             var x = 0
             while (++x < k) {
                 val contender = col.elementAt(random.nextInt(col.size))
-                if (fitness(contender).toDouble() > fitness(winner).toDouble())
-                    winner = contender
-            }
+				if (fitness(contender).toDouble() > fitness(winner).toDouble() == maximise)
+					winner = contender
+				
+            }	
             toReturn.add(winner)
         }
 
@@ -55,7 +59,7 @@ class GA<T>(internal var col: Collection<T>,
     fun findBestFitness(col: Collection<T>) : T {
         var s: T = col.elementAt(0)
         col.forEach {
-            if (fitness(it).toDouble() > fitness(s).toDouble())
+            if (fitness(it).toDouble() > fitness(s).toDouble() == maximise)
                 s = it
         }
         return s
