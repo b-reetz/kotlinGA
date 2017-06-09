@@ -23,12 +23,12 @@ class MicroGA<T> (
 				
 	val rand = Random()
 	/**
- * A basic Genetic Algorithm approach to
- *
- * @param a A generic which will be tested for pareto dominance
- * @param b A generic which will be tested for pareto dominance
- * @return a boolean whether a dominated b
- */
+	 *Function to test if one solution dominates another
+	 *
+	 * @param a A generic which will be tested for pareto dominance
+	 * @param b A generic which will be tested for pareto dominance
+	 * @return a boolean whether a dominated b
+	 */
 	fun dominates(a: T, b: T): Boolean{
 		var fit1 = totalFitness(a)
 		var fit2 = totalFitness(b)
@@ -43,7 +43,7 @@ class MicroGA<T> (
 	
 	
 	/**
-	 * A basic Genetic Algorithm approach to
+	 * Calculates the fitness values of the given solution
 	 *
 	 * @param sol The solution of which to calculate the fitness values
 	 * @return  A collection of fitness values
@@ -57,7 +57,7 @@ class MicroGA<T> (
 	}
 	
 	/**
-	 * A basic Genetic Algorithm approach to
+	 * Performs GA tournament selection on the passed through population, return a population of the same size
 	 *
 	 * @param col The collection which will be selected from
 	 * @return The winners of the tournament
@@ -82,7 +82,12 @@ class MicroGA<T> (
         return toReturn
     }
 	
-	
+	/**
+	 * Finds and returns the solution with the highest fitness in a population
+	 *
+	 * @param col The collection which will be find fittest
+	 * @return The member with the highest fitness in the collection
+	 */
 	fun findFittest(col: Collection<T>): T{
 		var best = col.elementAt(0)
 		
@@ -96,16 +101,20 @@ class MicroGA<T> (
 	}
 	
 	
-
+	/**
+	 * Runs the microGA program
+	 *
+	 * @param reps The number of repetitions to complete
+	 * @param maximise Boolean of whether we are looking for minimum or maximum
+	 */
     fun run(reps: Int = 100, maximise: Boolean = true) {
 		var microPop: ArrayList<T> = ArrayList()
 		var newPopulation: ArrayList<T> = ArrayList()
-		var front: ArrayList<T> = col.take(col.size)
 		
         //BEGIN
 		println("running")
 		//initialise
-		//var individuals = 
+		
 		for(i in 1..microPopSize){
 			microPop.add(col.elementAt(rand.nextInt(col.size)))
 		}
@@ -121,8 +130,6 @@ class MicroGA<T> (
 			best = findFittest(col)
 
 		}
-		
-		//insert into archive
 		
 		println(col)
 		col.forEach({b -> println(totalFitness(b))})
