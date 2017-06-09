@@ -4,7 +4,7 @@ class MicroGA<T>(
 				internal var nonreplacableIndividuals: Collection<T>,
 				internal var replacableIndividuals: Collection<T>,
 				internal var microPopSize: Int = 10,
-				internal var mutation: (T) -> T,
+				internal var mutation: (Collection<T>) -> Collection<T>,
 				internal var crossover: (Collection<T>) -> Collection<T>,
 				internal var fitnessFns: Collection<(T) -> Number>
 				) {
@@ -68,8 +68,8 @@ class MicroGA<T>(
 
     fun run(reps: Int = 100, maximise: Boolean = true) {
 		var microPop: ArrayList<T> = ArrayList()
-		val newPopulation: ArrayList<T> = ArrayList()
-		val best: T
+		var newPopulation: ArrayList<T> = ArrayList()
+		var best: T
         //BEGIN
 		println("running")
 		//initialise
@@ -82,7 +82,9 @@ class MicroGA<T>(
 			//select from population
 			newPopulation.addAll(tournamentSelection(microPop))
 			//crossover and mutate
-			microPop = crossover(newPopulation).map(mutation)
+			//microPop = crossover(newPopulation).map(mutation)
+			//stor one arbitrarily and copy to next gen
+			best = microPop.elementAt(rand.nextInt(microPop.size-1))
 			
 			
 		}
