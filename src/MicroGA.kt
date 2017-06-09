@@ -1,10 +1,9 @@
 import java.util.Random
 
-class MicroGA<T>(
-				internal var nonreplacableIndividuals: Collection<T>,
-				internal var replacableIndividuals: Collection<T>,
+class MicroGA<T> (
+				internal var individuals: Collection<T>,
 				internal var microPopSize: Int = 10,
-				internal var mutation: (Collection<T>) -> Collection<T>,
+				internal var mutation: (T) -> T,
 				internal var crossover: (Collection<T>) -> Collection<T>,
 				internal var fitnessFns: Collection<(T) -> Number>
 				) {
@@ -16,23 +15,14 @@ class MicroGA<T>(
 	/**
 	*	dominance function
 	*/
-	fun dominates(a: Collection<Number>, b: Collection<Number>): Boolean{
-		val dominates: ArrayList<Boolean> = ArrayList(a.size)
-		for(i in 0..a.size-2){
-			if(a.elementAt(i) as Double >= b.elementAt(i) as Double && a.elementAt(i+1) as Double >= b.elementAt(i+1) as Double){
-				if(a.elementAt(i) as Double > b.elementAt(i) as Double ||a.elementAt(i+1) as Double >= b.elementAt(i+1) as Double){
-					dominates.add(i, true)
-				}
+	fun dominates(a: T, b: T): Boolean{
+		var fit1 = totalFitness(a)
+		var fit2 = totalFitness(b)
+		
+		if(fit1.elementAt(0).toDouble() >= fit2.elementAt(0).toDouble() && fit1.elementAt(1).toDouble() >= fit2.elementAt(1).toDouble()){
+			if(fit1.elementAt(0).toDouble() > fit2.elementAt(0).toDouble() && fit1.elementAt(1).toDouble() > fit2.elementAt(1).toDouble()){
+			
 			}
-			else{
-				dominates.add(i, false)
-			}		
-		}
-		for(i in 0..dominates.size-1){
-			if (dominates.elementAt(i))
-				continue
-			else
-				return false
 		}
 		return true
 	}
@@ -45,7 +35,7 @@ class MicroGA<T>(
 		return fitnesses
 	}
 	
-	fun tournamentSelection(col: Collection<T>): ArrayList<T> {
+	fun tournamentSelection(col: Collection<T>): Collection<T> {
         val random = Random()
         val toReturn: ArrayList<T> = ArrayList()
 
@@ -64,30 +54,52 @@ class MicroGA<T>(
         }
         return toReturn
     }
+	
+	
+	fun findFittest(col: Collection<T>): T{
+		var best = col.elementAt(0)
+		
+		for(i in 1..col.size-1){
+			var contender = col.elementAt(i)
+			if(dominates(best, contender))
+				best = contender
+		}
+		
+		return best
+	}
 	//var functions: Collection<(T) -> Number> = ArrayList()
 
     fun run(reps: Int = 100, maximise: Boolean = true) {
 		var microPop: ArrayList<T> = ArrayList()
 		var newPopulation: ArrayList<T> = ArrayList()
-		var best: T
+		
         //BEGIN
 		println("running")
 		//initialise
-		val individuals = nonreplacableIndividuals.union(replacableIndividuals)
+		//var individuals = 
 		for(i in 1..microPopSize){
 			microPop.add(individuals.elementAt(rand.nextInt(individuals.size)))
 		}
+		var best = findFittest(microPop)
 		//while not done
 		for(evolve in 1..reps){
+			newPopulation.add(best)
 			//select from population
-			newPopulation.addAll(tournamentSelection(microPop))
+			newPopulation.addAll(tournamentSelection(microPop).take(microPopSize-1))
 			//crossover and mutate
-			//microPop = crossover(newPopulation).map(mutation)
+			individuals = crossover(newPopulation).map(mutation)
+			
 			//stor one arbitrarily and copy to next gen
-			best = microPop.elementAt(rand.nextInt(microPop.size-1))
+			best = findFittest(individuals)
 			
-			
+			//update archive with best
 		}
+		
+		//insert into archive
+		
+		println(individuals)
+		individuals.forEach({b -> println(totalFitness(b))})
+		//println(totalFitness(findFittest(individuals)))
 		//archive
     }
 	
