@@ -1,7 +1,7 @@
 import java.util.Random
 
 /**
- * A test class to
+ * Tests out the Ones function
  */
 private val rand = Random()
 fun main(args: Array<String>) {
@@ -61,7 +61,5 @@ private fun runBasicGA(population: Collection<String>) {
         }
         return charArray.joinToString("")
     }
-
-    GA(population, ::fitness, ::crossover, ::mutation).run(50, TOURNAMENT_SELECTION, 4)
 }
 

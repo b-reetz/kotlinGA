@@ -32,13 +32,15 @@ class MicroGA<T> (
 	fun dominates(a: T, b: T): Boolean{
 		var fit1 = totalFitness(a)
 		var fit2 = totalFitness(b)
-		
+		//check dominance, return true if a dominates b
 		if(fit1.elementAt(0).toDouble() >= fit2.elementAt(0).toDouble() && fit1.elementAt(1).toDouble() >= fit2.elementAt(1).toDouble()){
-			if(fit1.elementAt(0).toDouble() > fit2.elementAt(0).toDouble() && fit1.elementAt(1).toDouble() > fit2.elementAt(1).toDouble()){
-			
+			if(fit1.elementAt(0).toDouble() > fit2.elementAt(0).toDouble() || fit1.elementAt(1).toDouble() > fit2.elementAt(1).toDouble()){
+				return true
 			}
+			else
+				return false
 		}
-		return true
+		return false
 	}
 	
 	
@@ -65,7 +67,7 @@ class MicroGA<T> (
 	fun tournamentSelection(col: Collection<T>): Collection<T> {
         val random = Random()
         val toReturn: ArrayList<T> = ArrayList()
-
+        
         while (toReturn.size != col.size) {
             var winner = col.elementAt(random.nextInt(col.size))
 
@@ -73,7 +75,7 @@ class MicroGA<T> (
             var x = 0
             while (++x < 2) {
                 val contender = col.elementAt(random.nextInt(col.size))
-				if (dominates(totalFitness(winner), totalFitness(contender)) == maximise)
+				if (dominates(winner, contender))
 					winner = contender
 
             }
@@ -90,7 +92,7 @@ class MicroGA<T> (
 	 */
 	fun findFittest(col: Collection<T>): T{
 		var best = col.elementAt(0)
-		
+		//loop through keeping the most dominant solution
 		for(i in 1..col.size-1){
 			var contender = col.elementAt(i)
 			if(dominates(best, contender))
@@ -101,15 +103,45 @@ class MicroGA<T> (
 	}
 	
 	
+	fun archiveAcceptance(col: ArrayList<T>, newSol: T): ArrayList<T>{
+		var archive: ArrayList<T> = col
+		var toRemove = ArrayList<T>()
+		//if archive is empty, add new element
+		if(col.size == 0){
+			archive.add(newSol)
+			return archive
+		}
+		//if new element is dominated by any existing in archive, dont add
+		for(i in col){
+			if(dominates(i, newSol)){
+				return col
+			}
+			
+		}
+		//if new element dominates any in archive, remove dominated solutions
+		for(i in col){
+			if(dominates(newSol, i)){
+				toRemove.add(i)
+			}
+			
+		}
+		
+		archive.removeAll(toRemove)
+		//add new element and return the archive
+		archive.add(newSol)
+		return archive
+	}
+	
 	/**
 	 * Runs the microGA program
 	 *
 	 * @param reps The number of repetitions to complete
 	 * @param maximise Boolean of whether we are looking for minimum or maximum
 	 */
-    fun run(reps: Int = 100, maximise: Boolean = true) {
+    fun run(reps: Int = 10, targetSize: Int = 10, maximise: Boolean = true) {
 		var microPop: ArrayList<T> = ArrayList()
 		var newPopulation: ArrayList<T> = ArrayList()
+		var archive: ArrayList<T> = ArrayList()
 		
         //BEGIN
 		println("running")
@@ -119,22 +151,45 @@ class MicroGA<T> (
 			microPop.add(col.elementAt(rand.nextInt(col.size)))
 		}
 		var best = findFittest(microPop)
+		archive.add(best)
 		//while not done
-		for(evolve in 1..reps){
-			newPopulation.add(best)
-			//select from population
-			newPopulation.addAll(tournamentSelection(microPop).take(microPopSize-1))
-			//crossover and mutate
-			col = crossover(newPopulation).map(mutation)
-			
-			best = findFittest(col)
-
+		while(archive.size < targetSize){
+			//for number of reps required in evolution
+			for(evolve in 1..reps){
+				//add the best from population
+				newPopulation.add(best)
+				//selection from population
+				newPopulation.addAll(tournamentSelection(microPop))
+				//crossover and mutate
+				col = crossover(newPopulation).map(mutation)
+				//find best fitness
+				best = findFittest(col)
+				//run archive acceptance on the best solution
+				archive = archiveAcceptance(archive, best)
+				//reinitialise population
+				microPop.clear()
+				
+				for(i in 1..microPopSize){
+					microPop.add(col.elementAt(rand.nextInt(col.size)))
+				}
+			}
 		}
 		
-		println(col)
-		col.forEach({b -> println(totalFitness(b))})
+		//print the archive and fitnesses
+		println(archive)
+		archive.forEach({b -> println(totalFitness(b))})
 
     }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

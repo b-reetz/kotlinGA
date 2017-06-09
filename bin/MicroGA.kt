@@ -1,10 +1,19 @@
 import java.util.Random
 
-class MicroGA<T>(
-				internal var nonreplacableIndividuals: Collection<T>,
-				internal var replacableIndividuals: Collection<T>,
+
+/**
+ * A basic Genetic Algorithm approach to
+ *
+ * @param col The initial population
+ * @param microPopSize The size of the micro population to be generated ad run in the algorithm
+ * @param fitnessFns The fitness functions to test against members of the population
+ * @param crossover The crossover function to apply to members within the population
+ * @param mutation The mutation function to apply to members of the population*
+ */
+class MicroGA<T> (
+				internal var col: Collection<T>,
 				internal var microPopSize: Int = 10,
-				internal var mutation: (Collection<T>) -> Collection<T>,
+				internal var mutation: (T) -> T,
 				internal var crossover: (Collection<T>) -> Collection<T>,
 				internal var fitnessFns: Collection<(T) -> Number>
 				) {
@@ -14,29 +23,33 @@ class MicroGA<T>(
 				
 	val rand = Random()
 	/**
-	*	dominance function
-	*/
-	fun dominates(a: Collection<Number>, b: Collection<Number>): Boolean{
-		val dominates: ArrayList<Boolean> = ArrayList(a.size)
-		for(i in 0..a.size-2){
-			if(a.elementAt(i) as Double >= b.elementAt(i) as Double && a.elementAt(i+1) as Double >= b.elementAt(i+1) as Double){
-				if(a.elementAt(i) as Double > b.elementAt(i) as Double ||a.elementAt(i+1) as Double >= b.elementAt(i+1) as Double){
-					dominates.add(i, true)
-				}
+	 *Function to test if one solution dominates another
+	 *
+	 * @param a A generic which will be tested for pareto dominance
+	 * @param b A generic which will be tested for pareto dominance
+	 * @return a boolean whether a dominated b
+	 */
+	fun dominates(a: T, b: T): Boolean{
+		var fit1 = totalFitness(a)
+		var fit2 = totalFitness(b)
+		//check dominance, return true if a dominates b
+		if(fit1.elementAt(0).toDouble() >= fit2.elementAt(0).toDouble() && fit1.elementAt(1).toDouble() >= fit2.elementAt(1).toDouble()){
+			if(fit1.elementAt(0).toDouble() > fit2.elementAt(0).toDouble() || fit1.elementAt(1).toDouble() > fit2.elementAt(1).toDouble()){
+				return true
 			}
-			else{
-				dominates.add(i, false)
-			}		
-		}
-		for(i in 0..dominates.size-1){
-			if (dominates.elementAt(i))
-				continue
 			else
 				return false
 		}
-		return true
+		return false
 	}
 	
+	
+	/**
+	 * Calculates the fitness values of the given solution
+	 *
+	 * @param sol The solution of which to calculate the fitness values
+	 * @return  A collection of fitness values
+	 */
 	fun totalFitness(sol: T): Collection<Number>{
 		var fitnesses: ArrayList<Number> = ArrayList()
 		for(e in fitnessFns){
@@ -45,10 +58,16 @@ class MicroGA<T>(
 		return fitnesses
 	}
 	
-	fun tournamentSelection(col: Collection<T>): ArrayList<T> {
+	/**
+	 * Performs GA tournament selection on the passed through population, return a population of the same size
+	 *
+	 * @param col The collection which will be selected from
+	 * @return The winners of the tournament
+	 */
+	fun tournamentSelection(col: Collection<T>): Collection<T> {
         val random = Random()
         val toReturn: ArrayList<T> = ArrayList()
-
+        
         while (toReturn.size != col.size) {
             var winner = col.elementAt(random.nextInt(col.size))
 
@@ -56,7 +75,7 @@ class MicroGA<T>(
             var x = 0
             while (++x < 2) {
                 val contender = col.elementAt(random.nextInt(col.size))
-				if (dominates(totalFitness(winner), totalFitness(contender)) == maximise)
+				if (dominates(winner, contender))
 					winner = contender
 
             }
@@ -64,32 +83,113 @@ class MicroGA<T>(
         }
         return toReturn
     }
-	//var functions: Collection<(T) -> Number> = ArrayList()
-
-    fun run(reps: Int = 100, maximise: Boolean = true) {
+	
+	/**
+	 * Finds and returns the solution with the highest fitness in a population
+	 *
+	 * @param col The collection which will be find fittest
+	 * @return The member with the highest fitness in the collection
+	 */
+	fun findFittest(col: Collection<T>): T{
+		var best = col.elementAt(0)
+		//loop through keeping the most dominant solution
+		for(i in 1..col.size-1){
+			var contender = col.elementAt(i)
+			if(dominates(best, contender))
+				best = contender
+		}
+		
+		return best
+	}
+	
+	
+	fun archiveAcceptance(col: ArrayList<T>, newSol: T): ArrayList<T>{
+		var archive: ArrayList<T> = col
+		var toRemove = ArrayList<T>()
+		//if archive is empty, add new element
+		if(col.size == 0){
+			archive.add(newSol)
+			return archive
+		}
+		//if new element is dominated by any existing in archive, dont add
+		for(i in col){
+			if(dominates(i, newSol)){
+				return col
+			}
+			
+		}
+		//if new element dominates any in archive, remove dominated solutions
+		for(i in col){
+			if(dominates(newSol, i)){
+				toRemove.add(i)
+			}
+			
+		}
+		
+		archive.removeAll(toRemove)
+		//add new element and return the archive
+		archive.add(newSol)
+		return archive
+	}
+	
+	/**
+	 * Runs the microGA program
+	 *
+	 * @param reps The number of repetitions to complete
+	 * @param maximise Boolean of whether we are looking for minimum or maximum
+	 */
+    fun run(reps: Int = 10, targetSize: Int = 10, maximise: Boolean = true) {
 		var microPop: ArrayList<T> = ArrayList()
 		var newPopulation: ArrayList<T> = ArrayList()
-		var best: T
+		var archive: ArrayList<T> = ArrayList()
+		
         //BEGIN
 		println("running")
 		//initialise
-		val individuals = nonreplacableIndividuals.union(replacableIndividuals)
+		
 		for(i in 1..microPopSize){
-			microPop.add(individuals.elementAt(rand.nextInt(individuals.size)))
+			microPop.add(col.elementAt(rand.nextInt(col.size)))
 		}
+		var best = findFittest(microPop)
+		archive.add(best)
 		//while not done
-		for(evolve in 1..reps){
-			//select from population
-			newPopulation.addAll(tournamentSelection(microPop))
-			//crossover and mutate
-			//microPop = crossover(newPopulation).map(mutation)
-			//stor one arbitrarily and copy to next gen
-			best = microPop.elementAt(rand.nextInt(microPop.size-1))
-			
-			
+		while(archive.size < targetSize){
+			//for number of reps required in evolution
+			for(evolve in 1..reps){
+				//add the best from population
+				newPopulation.add(best)
+				//selection from population
+				newPopulation.addAll(tournamentSelection(microPop))
+				//crossover and mutate
+				col = crossover(newPopulation).map(mutation)
+				//find best fitness
+				best = findFittest(col)
+				//run archive acceptance on the best solution
+				archive = archiveAcceptance(archive, best)
+				//reinitialise population
+				microPop.clear()
+				
+				for(i in 1..microPopSize){
+					microPop.add(col.elementAt(rand.nextInt(col.size)))
+				}
+			}
 		}
-		//archive
+		
+		//print the archive and fitnesses
+		println(archive)
+		archive.forEach({b -> println(totalFitness(b))})
+
     }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
