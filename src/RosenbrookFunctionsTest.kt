@@ -23,32 +23,32 @@ fun main(args: Array<String>) {
 
 }
 
-/**
- * Applies the rosenbrook function to a member of the population
- *
- * @param col the member of the population (a list of doubles)
- * @return the fitness value for the given member of the population
- */
-private fun fitness(col: Collection<Number>): Number {
-    var total = 0.0
-
-    val inDoubles: List<Double> = col.map{it.toDouble()}
-
-    for (i in 0..col.size - 1 - 1) {
-        val first = inDoubles[i + 1] - inDoubles[i] * inDoubles[i]
-        val second = 100 * (first * first) //100(xi+1 - xi^2)^2
-        val third = (inDoubles[i] - 1) * (inDoubles[i] - 1) //(xi - 1) ^ 2
-        total += second + third
-    }
-    return total
-}
-
 
 /**
  * The basic GA method
  */
 private fun runBasicGA(population: Collection<Collection<Number>>) {
     val rand = Random()
+
+    /**
+     * Applies the rosenbrook function to a member of the population
+     *
+     * @param col the member of the population (a list of doubles)
+     * @return the fitness value for the given member of the population
+     */
+    fun fitness(col: Collection<Number>): Number {
+        var total = 0.0
+
+        val inDoubles: List<Double> = col.map{it.toDouble()}
+
+        for (i in 0..col.size - 1 - 1) {
+            val first = inDoubles[i + 1] - inDoubles[i] * inDoubles[i]
+            val second = 100 * (first * first) //100(xi+1 - xi^2)^2
+            val third = (inDoubles[i] - 1) * (inDoubles[i] - 1) //(xi - 1) ^ 2
+            total += second + third
+        }
+        return total
+    }
 
     /**
      * The crossover function for this GA
@@ -98,5 +98,5 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
     }
 
     //Runs the GA with the given parameters, preferring lower fitness values
-    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(50000, false)
+    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation).run(50000, TOURNAMENT_SELECTION, 4, false)
 }

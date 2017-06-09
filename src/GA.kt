@@ -1,25 +1,31 @@
 import java.util.Random
 import kotlin.collections.ArrayList
 
+
+const val TOURNAMENT_SELECTION = 1
+const val ROULETTE_WHEEL_SELECTION = 2
+const val RANDOM_SELECTION = 3
+
 /**
  * A basic Genetic Algorithm approach to
  *
  * @param col The initial population
  * @param fitness The fitness function to test against members of the population
  * @param crossover The crossover function to apply to members within the population
- * @param mutation The mutation function to apply to members of the population
- * @param k The amount of rounds within the tournament selection
- *
+ * @param mutation The mutation function to apply to members of the population*
  */
 class GA<T>(internal var col: Collection<T>,
             internal var fitness: (T) -> Number,
             internal var crossover: (Collection<T>) -> Collection<T>,
-            internal var mutation: (T) -> T,
-            internal var k: Int) {
+            internal var mutation: (T) -> T) {
+
 
     //Generates the initial fitness collection
     internal var allFitness: Collection<Number> = col.map(fitness)
+    internal var k = 0
 	internal var maximise: Boolean = true
+
+
 
 
 
@@ -32,15 +38,25 @@ class GA<T>(internal var col: Collection<T>,
      *  updates all of the fitness's
      *  prints out the best fitness
      *
-     * @param x Number of iterations to execute for
+     * @param iterations Number of iterations to execute for
+     * @param tournamentRounds Amount of rounds the tournament selection should have
      * @param max Boolean indicates whether greater fitness is good or bad
      */
-    fun run(x: Int, max: Boolean = true) {
+    fun run(iterations: Int, selectionMethod: Int = 1, tournamentRounds: Int = 2, max: Boolean = true) {
+        this.k = tournamentRounds
         val newPopulation: ArrayList<T> = ArrayList()
 		maximise = max
-        for (i in 0..x) {
-            //creates a new population via the tournamentSelection method
-            newPopulation.addAll(tournamentSelection(col))
+        for (i in 0..iterations) {
+
+            //creates a new population via the given selection method method
+            when (selectionMethod) {
+                ROULETTE_WHEEL_SELECTION ->
+                    newPopulation.addAll(rouletteWheelSelection(col))
+                RANDOM_SELECTION ->
+                    newPopulation.addAll(randomSelection(col))
+                else ->
+                    newPopulation.addAll(tournamentSelection(col))
+            }
 
             //creates new crossover population, and then mutates every solution (maybe)
             col = crossover(newPopulation).map(mutation)
@@ -87,6 +103,49 @@ class GA<T>(internal var col: Collection<T>,
             toReturn.add(winner)
         }
         return toReturn
+    }
+
+    /**
+     * random selection method
+     *
+     * @param col population
+     * @return the new population
+     */
+    fun randomSelection(col: Collection<T>): Collection<T> {
+        val random = Random()
+        val newPopulation: ArrayList<T> = ArrayList()
+
+        while (newPopulation.size != col.size)
+            newPopulation.add(col.elementAt(random.nextInt(col.size)))
+
+        return newPopulation
+    }
+
+    /**
+     * makes a new population using the RWS on the given population
+     *
+     * @param population the population we're performing RWS on
+     * @return the new selected population
+     */
+    fun rouletteWheelSelection(population: Collection<T>) : Collection<T> {
+        val random = Random()
+        val newPopulation: ArrayList<T> = ArrayList()
+
+        val totalFitness: Double = population.map(fitness).reduce{total, next -> total.toDouble() + next.toDouble()}.toDouble()
+
+
+        while (newPopulation.size != population.size) {
+            var value = random.nextDouble() * totalFitness
+            for (i in population) {
+                value -= fitness(i).toDouble()
+                if (value <= 0)
+                    newPopulation.add(i)
+                break
+            }
+            newPopulation.add(population.last())
+        }
+
+        return newPopulation
     }
 
     /**

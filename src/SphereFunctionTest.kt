@@ -25,18 +25,19 @@ fun main(args: Array<String>) {
 }
 
 /**
- *
- *
- * @param col the given member of the population to calculate the fitness for
- * @return the fitness of this member of the population
- */
-private fun fitness(col: Collection<Number>): Number {
-    return col.reduce{total, next -> total.toDouble() + Math.pow(next.toDouble(), 2.0)}
-}
-/**
  * The basic GA method
  */
 private fun runBasicGA(population: Collection<Collection<Number>>) {
+
+    /**
+     *
+     *
+     * @param col the given member of the population to calculate the fitness for
+     * @return the fitness of this member of the population
+     */
+    fun fitness(col: Collection<Number>): Number {
+        return col.reduce{total, next -> total.toDouble() + Math.pow(next.toDouble(), 2.0)}
+    }
 
     /**
      * The crossover function for this GA
@@ -86,5 +87,5 @@ private fun runBasicGA(population: Collection<Collection<Number>>) {
     }
 
     //runs the GA with the given parameters, preferring a small fitness
-    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation, k = 4).run(200, false)
+    GA(col = population, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation).run(200, TOURNAMENT_SELECTION, 4, false)
 }

@@ -11,20 +11,19 @@ fun main(args: Array<String>) {
     for (i in 0..popSize)
         initPopulation.add(String.format("%32s", Integer.toBinaryString(rand.nextInt())).replace(' ', '0'))
 
-
     runBasicGA(initPopulation)
 
 }
-/**
- * The fitness function
- *
- * @param s The string to calculate fitness for
- * @return the number of '1's in s
- */
-fun fitness(s: String) : Number = s.split('1').size - 1
-
 
 private fun runBasicGA(population: Collection<String>) {
+
+    /**
+     * The fitness function
+     *
+     * @param s The string to calculate fitness for
+     * @return the number of '1's in s
+     */
+    fun fitness(s: String) : Number = s.split('1').size - 1
 
     /**
      * The crossover function for this GA
@@ -63,6 +62,6 @@ private fun runBasicGA(population: Collection<String>) {
         return charArray.joinToString("")
     }
 
-    GA(population, ::fitness, ::crossover, ::mutation, 4).run(50)
+    GA(population, ::fitness, ::crossover, ::mutation).run(50, TOURNAMENT_SELECTION, 4)
 }
 
