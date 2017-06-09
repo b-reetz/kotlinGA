@@ -1,7 +1,7 @@
 import java.util.Random
 
 /**
- * Tests out the Ones function
+ * A test class to
  */
 private val rand = Random()
 fun main(args: Array<String>) {

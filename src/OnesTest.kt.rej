@@ -1,0 +1,10 @@
+diff a/src/OnesTest.kt b/src/OnesTest.kt	(rejected hunks)
+@@ -1,7 +1,7 @@
+ import java.util.Random
+ 
+ /**
+- * A test class to
++ * Tests out the Ones function
+  */
+ private val rand = Random()
+ fun main(args: Array<String>) {
