@@ -30,15 +30,11 @@ class MicroGA<T> (
 	 * @return a boolean whether a dominated b
 	 */
 	fun dominates(a: T, b: T): Boolean{
-		var fit1 = totalFitness(a)
-		var fit2 = totalFitness(b)
+		val fit1 = totalFitness(a)
+		val fit2 = totalFitness(b)
 		//check dominance, return true if a dominates b
 		if(fit1.elementAt(0).toDouble() >= fit2.elementAt(0).toDouble() && fit1.elementAt(1).toDouble() >= fit2.elementAt(1).toDouble()){
-			if(fit1.elementAt(0).toDouble() > fit2.elementAt(0).toDouble() || fit1.elementAt(1).toDouble() > fit2.elementAt(1).toDouble()){
-				return true
-			}
-			else
-				return false
+			return fit1.elementAt(0).toDouble() > fit2.elementAt(0).toDouble() || fit1.elementAt(1).toDouble() > fit2.elementAt(1).toDouble()
 		}
 		return false
 	}
@@ -51,10 +47,8 @@ class MicroGA<T> (
 	 * @return  A collection of fitness values
 	 */
 	fun totalFitness(sol: T): Collection<Number>{
-		var fitnesses: ArrayList<Number> = ArrayList()
-		for(e in fitnessFns){
-			fitnesses.add(e(sol))
-		}	
+		val fitnesses: ArrayList<Number> = ArrayList()
+		fitnessFns.mapTo(fitnesses) { it(sol) }
 		return fitnesses
 	}
 	
@@ -93,38 +87,28 @@ class MicroGA<T> (
 	fun findFittest(col: Collection<T>): T{
 		var best = col.elementAt(0)
 		//loop through keeping the most dominant solution
-		for(i in 1..col.size-1){
-			var contender = col.elementAt(i)
-			if(dominates(best, contender))
-				best = contender
-		}
+		(1..col.size-1)
+				.asSequence()
+				.map { col.elementAt(it) }
+				.filter { dominates(best, it) }
+				.forEach { best = it }
 		
 		return best
 	}
 	
 	
 	fun archiveAcceptance(col: ArrayList<T>, newSol: T): ArrayList<T>{
-		var archive: ArrayList<T> = col
-		var toRemove = ArrayList<T>()
+		val archive: ArrayList<T> = col
+		val toRemove = ArrayList<T>()
 		//if archive is empty, add new element
 		if(col.size == 0){
 			archive.add(newSol)
 			return archive
 		}
 		//if new element is dominated by any existing in archive, dont add
-		for(i in col){
-			if(dominates(i, newSol)){
-				return col
-			}
-			
-		}
+		col.filter { dominates(it, newSol) }.forEach { return col }
 		//if new element dominates any in archive, remove dominated solutions
-		for(i in col){
-			if(dominates(newSol, i)){
-				toRemove.add(i)
-			}
-			
-		}
+		col.filterTo(toRemove) { dominates(newSol, it) }
 		
 		archive.removeAll(toRemove)
 		//add new element and return the archive
@@ -139,8 +123,9 @@ class MicroGA<T> (
 	 * @param maximise Boolean of whether we are looking for minimum or maximum
 	 */
     fun run(reps: Int = 10, targetSize: Int = 10, maximise: Boolean = true) {
-		var microPop: ArrayList<T> = ArrayList()
-		var newPopulation: ArrayList<T> = ArrayList()
+		this.maximise = maximise
+		val microPop: ArrayList<T> = ArrayList()
+		val newPopulation: ArrayList<T> = ArrayList()
 		var archive: ArrayList<T> = ArrayList()
 		
         //BEGIN
