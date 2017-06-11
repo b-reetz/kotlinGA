@@ -9,11 +9,9 @@ As an example, to create a test for the OnesProblem using the generic GA algorit
 ```kotlin
 GA(col = initPopulation, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation).run(iterations = 200, selectionMethod = selection, max = false)
 ```
-where 
+
+The GA Constructor is 
 ```kotlin
-initPopulation
+GA<T>(col: Collection<T>, fitness: (T) -> Number, crossover: (Collection<T>) -> Collection<T>, mutation: (T) -> T)
 ```
-is expected to be a
-```kotlin Collection<T>
-```
-where T is the generic type. In our test implementation, the OnesProblem type is represented as a String of 32 chars.
+As our OnesProblem is being represented as a population of _Strings_ (it could be a _Collection&lt;Char&gt;_ in which case that is what the type (_T_) would be), the fitness function that you declare must take in a _String_ and return a _Number_
