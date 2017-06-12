@@ -27,6 +27,7 @@ fun main(args: Array<String>){
 	}
 	//run the microGA
 	MicroGA(pop, 10, ::mutation, ::crossover, funcs).run(50, 10, false)
+
 }
 
 /**

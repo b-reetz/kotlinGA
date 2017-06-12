@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
 private fun sphereFunctionTest(selection: Int = TOURNAMENT_SELECTION) {
 
     val popSize = 200 //size of the population
-    val sphereN = 5 //size of the vectors each member of the population holds
+    val sphereN = 2 //size of the vectors each member of the population holds
 
     val initPopulation: ArrayList<ArrayList<Double>> = ArrayList()
 
@@ -42,7 +42,7 @@ private fun sphereFunctionTest(selection: Int = TOURNAMENT_SELECTION) {
     for (i in 0..popSize) {
         val temp: ArrayList<Double> = ArrayList()
         for (j in 0..sphereN-1)
-            temp.add(rand.nextGaussian())
+            temp.add(rand.nextDouble())
         initPopulation.add(temp)
     }
 
@@ -104,15 +104,15 @@ private fun sphereFunctionTest(selection: Int = TOURNAMENT_SELECTION) {
     }
 
     //runs the GA with the given parameters, preferring a small fitness
-    GA(col = initPopulation, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation).run(iterations = 200, selectionMethod = selection, max = false)
+    GA(col = initPopulation, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation).run(iterations = 1000, selectionMethod = selection, max = false)
 }
 
 /**
  *
  */
 private fun rosenbrookFunctionTest(selection: Int = TOURNAMENT_SELECTION) {
-    val popSize = 200 //size of the population
-    val sphereN = 10 //size of the vectors each member of the population holds
+    val popSize = 500 //size of the population
+    val sphereN = 5 //size of the vectors each member of the population holds
 
     val initPopulation: ArrayList<ArrayList<Double>> = ArrayList()
 
@@ -192,7 +192,7 @@ private fun rosenbrookFunctionTest(selection: Int = TOURNAMENT_SELECTION) {
     }
 
     //Runs the GA with the given parameters, preferring lower fitness values
-    GA(col = initPopulation, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation).run(iterations = 50000, selectionMethod = selection, max = false)
+    GA(col = initPopulation, fitness = ::fitness, crossover = ::crossover, mutation = ::mutation).run(iterations = 10000, selectionMethod = selection, max = false)
 }
 
 private fun onesTest(selection: Int = TOURNAMENT_SELECTION) {
@@ -338,6 +338,6 @@ fun rastriginFunctionTest(selection: Int = TOURNAMENT_SELECTION) {
         return temp
     }
     //runs the GA
-    GA(initPopulation, ::fitness, ::crossover, ::mutation).run(iterations = 500, selectionMethod = selection, max = false)
+    GA(initPopulation, ::fitness, ::crossover, ::mutation).run(iterations = 20000, selectionMethod = selection, max = false)
 
 }
