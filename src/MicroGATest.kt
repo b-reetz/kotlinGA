@@ -12,14 +12,14 @@ private val D = 30
  */
 fun main(args: Array<String>){
 	//put fitness functions in the collection
-	var funcs: ArrayList<(Collection<Double>) -> Double> = ArrayList()
+	val funcs: ArrayList<(Collection<Double>) -> Double> = ArrayList()
 	funcs.add(fit1)
 	funcs.add(fit2)
 	//generate initial population
-	var pop: ArrayList<ArrayList<Double>> = ArrayList()
+	val pop: ArrayList<ArrayList<Double>> = ArrayList()
 	
 	for(i in 1..10){
-		var tmp = ArrayList<Double>()
+		val tmp = ArrayList<Double>()
 		for(j in 1..D){
 		 	tmp.add(rand.nextDouble())
 		}
@@ -27,6 +27,7 @@ fun main(args: Array<String>){
 	}
 	//run the microGA
 	MicroGA(pop, 10, ::mutation, ::crossover, funcs).run(50, 10, false)
+
 }
 
 /**
@@ -54,11 +55,9 @@ fun clamp(d: Double): Double{
  *@return mutated solution
  */
 fun mutation(col: ArrayList<Double>): ArrayList<Double>{
-	var newCol :ArrayList<Double> = ArrayList()
+	val newCol :ArrayList<Double> = ArrayList()
 	//loops through values in solution and adds gaussian noise
-	for(i in 0..D-1){
-		newCol.add(clamp(col.elementAt(i) + (rand.nextGaussian() * 0.1)))
-	}
+	(0..D-1).mapTo(newCol) { clamp(col.elementAt(it) + (rand.nextGaussian() * 0.1)) }
 	
 	return newCol
 }
@@ -71,18 +70,14 @@ fun mutation(col: ArrayList<Double>): ArrayList<Double>{
  *@return population of children
  */
 fun crossover(a: Collection<ArrayList<Double>>): Collection<ArrayList<Double>>{
-	var c :ArrayList<ArrayList<Double>> = ArrayList()
+	val c :ArrayList<ArrayList<Double>> = ArrayList()
 	//grab two random solutions and perform crossover
 	while(c.size != a.size){
-		var m = a.elementAt(rand.nextInt(a.size))
-		var n = a.elementAt(rand.nextInt(a.size))
-		var o: ArrayList<Double> = ArrayList()
-		for(i in 0..(D/2) - 1){
-			o.add(m.get(i))
-		}
-		for(i in (D/2)..m.size-1){
-			o.add(n.get(i))
-		}
+		val m = a.elementAt(rand.nextInt(a.size))
+		val n = a.elementAt(rand.nextInt(a.size))
+		val o: ArrayList<Double> = ArrayList()
+		(0..(D/2) - 1).mapTo(o) { m[it] }
+		((D/2)..m.size-1).mapTo(o) { n[it] }
 		c.add(o)		
 	}
 
@@ -92,8 +87,8 @@ fun crossover(a: Collection<ArrayList<Double>>): Collection<ArrayList<Double>>{
 //fitness functions to be passed into microGA function
 var fit1: (Collection<Double>)->Double = {it.elementAt(0)}
 var fit2: (Collection<Double>) -> Double = {
-	var g: Double = 1 + (9.0/(D-1)) * (it.sum() - it.elementAt(0))
-	var h: Double = 1.0 - Math.sqrt(Math.abs(it.elementAt(0)/g))
+	val g: Double = 1 + (9.0/(D-1)) * (it.sum() - it.elementAt(0))
+	val h: Double = 1.0 - Math.sqrt(Math.abs(it.elementAt(0)/g))
 	g*h
 }
 
